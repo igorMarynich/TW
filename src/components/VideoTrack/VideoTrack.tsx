@@ -4,7 +4,7 @@ import { styled } from '@material-ui/core/styles';
 import { Track } from 'twilio-video';
 
 const Video = styled('video')({
-  width: '100%',
+  width: '116%', // add change
   maxHeight: '100%',
   objectFit: 'contain',
 });

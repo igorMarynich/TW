@@ -6,7 +6,7 @@ import useVideoContext from '../../hooks/useVideoContext/useVideoContext';
 import useSelectedParticipant from '../VideoProvider/useSelectedParticipant/useSelectedParticipant';
 
 const Container = styled('aside')(({ theme }) => ({
-  padding: '0.5em',
+  padding: '0.1em', // add change
   overflowY: 'auto',
   [theme.breakpoints.down('xs')]: {
     overflowY: 'initial',

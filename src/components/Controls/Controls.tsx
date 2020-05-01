@@ -6,6 +6,9 @@ import EndCallButton from './EndCallButton/EndCallButton';
 import ToggleAudioButton from './ToggleAudioButton/ToggleAudioButton';
 import ToggleVideoButton from './ToggleVideoButton/ToggleVideoButton';
 import ToggleScreenShareButton from './ToogleScreenShareButton/ToggleScreenShareButton';
+import TimerButton from './TimerButton/TimerButton';
+import ReactionsButton from './ReactionsButton/ReactionsButton';
+import ChatButton from './ChatButton/ChatButton';
 
 import useIsUserActive from './useIsUserActive/useIsUserActive';
 import useRoomState from '../../hooks/useRoomState/useRoomState';
@@ -49,7 +52,10 @@ export default function Controls() {
       <ToggleVideoButton disabled={isReconnecting} />
       {roomState !== 'disconnected' && (
         <>
-          <ToggleScreenShareButton disabled={isReconnecting} />
+          {/* <TimerButton />
+          <ReactionsButton />
+          <ChatButton /> */}
+          {/* <ToggleScreenShareButton disabled={isReconnecting} /> */}
           <EndCallButton />
         </>
       )}

@@ -14,7 +14,7 @@ const useStyles = makeStyles({
     position: 'relative',
     display: 'flex',
     alignItems: 'center',
-    gridArea: 'participantList',
+    // gridArea: 'participantList', //change
   },
   isVideoSwitchedOff: {
     '& video': {
@@ -35,7 +35,7 @@ const useStyles = makeStyles({
     position: 'absolute',
     zIndex: 1,
     height: '100%',
-    padding: '0.4em',
+    padding: '0.1em', //add change
     width: '100%',
   },
 });

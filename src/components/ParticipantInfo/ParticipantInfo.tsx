@@ -1,4 +1,5 @@
-import React from 'react';
+//@ts-nocheck
+import React, { useContext, useState, useEffect } from 'react';
 import clsx from 'clsx';
 import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
 import { LocalAudioTrack, LocalVideoTrack, Participant, RemoteAudioTrack, RemoteVideoTrack } from 'twilio-video';
@@ -15,6 +16,7 @@ import useParticipantNetworkQualityLevel from '../../hooks/useParticipantNetwork
 import usePublications from '../../hooks/usePublications/usePublications';
 import useIsTrackSwitchedOff from '../../hooks/useIsTrackSwitchedOff/useIsTrackSwitchedOff';
 import useTrack from '../../hooks/useTrack/useTrack';
+import { SecondsContext } from '../../components/SecondsContext/SecondsContext';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -23,7 +25,7 @@ const useStyles = makeStyles((theme: Theme) =>
       display: 'flex',
       alignItems: 'center',
       height: `${(theme.sidebarWidth * 9) / 16}px`,
-      overflow: 'hidden',
+      overflow: 'auto', // add change
       cursor: 'pointer',
       '& video': {
         filter: 'none',
@@ -51,7 +53,7 @@ const useStyles = makeStyles((theme: Theme) =>
       flexDirection: 'column',
       justifyContent: 'space-between',
       height: '100%',
-      padding: '0.4em',
+      padding: '0.1em', //add change
       width: '100%',
       background: 'transparent',
     },
@@ -96,6 +98,32 @@ export default function ParticipantInfo({ participant, onClick, isSelected, chil
 
   const classes = useStyles();
 
+  const value = useContext(SecondsContext);
+  const [participantSeconds, setParticipantSeconds] = useState(0);
+  const [participantMinutes, setParticipantMinutes] = useState(0);
+  const [participantActive, setParticipantActive] = useState(true);
+
+  useEffect(() => {
+    let interval = null;
+    if (value.mainIsActive && value.mainMinutes >= 0) {
+      interval = setInterval(() => {
+        if (Number.isInteger(participantSeconds / 60) && value.mainMinutes >= 1 && participantActive) {
+          setParticipantMinutes(value.mainMinutes - 1);
+          setParticipantSeconds(participantSeconds => participantSeconds + 59);
+        }
+        if (participantMinutes === 0) {
+          setParticipantActive(false);
+        }
+        if (participantSeconds >= 1) {
+          setParticipantSeconds(participantSeconds => participantSeconds - 1);
+        }
+      }, 1000);
+    } else if (!value.mainIsActive && value.mainSeconds !== 0) {
+      clearInterval(interval);
+    }
+    return () => clearInterval(interval);
+  });
+
   return (
     <div
       className={clsx(classes.container, {
@@ -110,7 +138,10 @@ export default function ParticipantInfo({ participant, onClick, isSelected, chil
             <ParticipantConnectionIndicator participant={participant} />
             {participant.identity}
           </h4>
-          <NetworkQualityLevel qualityLevel={networkQualityLevel} />
+          <div>
+            {participantMinutes}m : {participantSeconds}s
+          </div>
+          {/* <NetworkQualityLevel qualityLevel={networkQualityLevel} /> */}
         </div>
         <div>
           <AudioLevelIndicator audioTrack={audioTrack} background="white" />
